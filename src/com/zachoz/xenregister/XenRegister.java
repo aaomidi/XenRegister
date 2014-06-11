@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
  * Plugin to allow in-game registration for the XenForo forum software.
@@ -23,8 +24,8 @@ import java.util.Random;
 public class XenRegister extends JavaPlugin {
 
     private static String site, apiHash, usernameField, uuidField;
-    private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final Pattern emailPattern = Pattern.compile(
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
     public void onEnable() {
         saveDefaultConfig();
@@ -75,7 +76,7 @@ public class XenRegister extends JavaPlugin {
             return ChatColor.RED + "Potential injection attack! This event has been recorded!";
         }
 
-        if (!email.matches(EMAIL_PATTERN)) {
+        if (emailPattern.matcher(email).matches()) {
             return ChatColor.RED + "Invalid email address!";
         }
 
